@@ -2,7 +2,6 @@ services:
   db:
     image: postgres:16
     container_name: dbapp_postgres
-    environment:
     ports:
       - "5433:5432"
     volumes:
