@@ -1,0 +1,47 @@
+[project]
+name = "jam"
+version = "0.0.1"
+authors = [
+    {name = "Alex Levy",     email = "ajlevy246@gmail.com"},
+    {name = "Zach Ferguson", email = "ferguszo@vt.edu"},
+    {name = "Joshua Gould",  email = "joshuag25@vt.edu"},
+    {name = "Max Redman",    email = "maxred@vt.edu"},
+]
+description = "A job application manager deployed with a PostgreSQL backend hosted on Neon."
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE.txt"]
+dependencies = [
+    "textual",
+    "fastapi",
+    "psycopg2-binary",
+    "dotenv",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "pyright",
+]
+
+[project.urls]
+homepage = "https://github.com/z-ferg/Job_App_Manager"
+
+[project.scripts]
+jam-api = "jam.backend.__main__:main"
+jam     = "jam.tui.__main__:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.tcss"]
