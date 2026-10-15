@@ -1,10 +1,7 @@
 """Start the Textual TUI frontend application."""
-from textual.app import App
+
+from jam.tui.app import JamApp
 
 
-class JamTUI(App):
-    ...
-
-def main(argc: int, argv: list[str]) -> None:
-    app = JamTUI()
-    app.run()
+def main() -> None:
+    JamApp().run()
