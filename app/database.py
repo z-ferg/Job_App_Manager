@@ -81,14 +81,14 @@ def run_change(sql, params=None):
 # ---------- READ (the R in CRUD) ----------
 def get_students():
     # ORDER BY gives a predictable order; without it rows can come back in any order.
-    return run_query("SELECT student_id, name, email FROM students ORDER BY student_id;")
+    return run_query("SELECT student_id, name, email FROM student ORDER BY student_id;")
 
 
 def search_students(keyword):
     # ILIKE = case-insensitive match. The % wildcards ("anything before/after")
     # go in the PARAMETER, not in the SQL string, so the query stays safe.
     return run_query(
-        "SELECT student_id, name, email FROM students "
+        "SELECT student_id, name, email FROM student "
         "WHERE name ILIKE %s OR email ILIKE %s ORDER BY student_id;",
         (f"%{keyword}%", f"%{keyword}%"),
     )
@@ -118,7 +118,7 @@ def delete_student(student_id):
     # (student_id,) needs the trailing comma: it makes a one-item tuple.
     # ON DELETE CASCADE in init.sql also removes this student's enrollments.
     return run_change(
-        "DELETE FROM students WHERE student_id = %s;",
+        "DELETE FROM student WHERE student_id = %s;",
         (student_id,),
     )
 
@@ -129,7 +129,7 @@ def get_enrollment_details():
     # s, e, c are short aliases for the table names.
     return run_query("""
         SELECT s.name, c.course_name, e.semester, e.grade
-        FROM students s
+        FROM student s
         JOIN enrollments e ON s.student_id = e.student_id
         JOIN courses c     ON c.course_id  = e.course_id
         ORDER BY s.name;
