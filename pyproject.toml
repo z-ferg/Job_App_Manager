@@ -27,6 +27,7 @@ dependencies = [
 
     # --- Textual Frontend ---
     "textual",
+    "httpx",
 ]
 
 [project.optional-dependencies]
