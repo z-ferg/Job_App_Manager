@@ -3,11 +3,20 @@
 ## Quickstart
 1. Create `.env` and add `DATABASE_URL` pointing to the neon database.
 
-2. Create a new python virtual environment and install the required dependencies:
+2. Create a new python virtual environment and install the package.
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -e .[dev]
+```
+> We can switch to docker compose soon.
+
+3. In one session, start the FastAPI backend:
+```bash
+$ jam-api
 ```
 
-3. Run the textual app: **Not yet implemented**
+and launch the TUI in another:
+```bash
+$ jam
+```
