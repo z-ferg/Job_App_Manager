@@ -22,7 +22,7 @@ dependencies = [
 
     # --- Database API ---
     "fastapi",
-    "psycopg[binary]",
+    "psycopg[binary,pool]",
     "uvicorn",
 
     # --- Textual Frontend ---
@@ -52,3 +52,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "*" = ["*.tcss"]
+
+[tool.ruff.lint.flake8-bugbear]
+# fix from https://stackoverflow.com/questions/73306462/flake8-throws-b008-fastapi-data-type-definitions 
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]
