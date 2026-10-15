@@ -1,14 +1,14 @@
------------- COMPANY ------------
+-- COMPANY
 CREATE TABLE company (
-    company_id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    company_id    SERIAL PRIMARY KEY,
     company_name  VARCHAR(255) NOT NULL UNIQUE,
-    industry      VARCHAR(100) NULL,  -- absent if created via external application
-    website       VARCHAR(255) NULL   -- absent if created via external application
+    industry      VARCHAR(100) NULL,
+    website       VARCHAR(255) NULL
 );
 
------------- STUDENT ------------
+-- STUDENT
 CREATE TABLE student (
-    student_id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    student_id  SERIAL PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
     email       VARCHAR(255) NOT NULL UNIQUE,
     university  VARCHAR(255) NOT NULL,
@@ -17,35 +17,35 @@ CREATE TABLE student (
     CONSTRAINT chk_student_grad_year CHECK (grad_year BETWEEN 2000 AND 2100)
 );
 
------------- CAREER_FAIR_EVENT ------------
+-- CAREER_FAIR_EVENT
 CREATE TABLE career_fair_event (
-    event_id     INT AUTO_INCREMENT PRIMARY KEY,
+    event_id     SERIAL PRIMARY KEY,
     event_name   VARCHAR(255) NOT NULL,
-    event_date   DATETIME NULL,       -- NULL if date/time TBD
-    location     VARCHAR(255) NULL,   -- NULL if location TBD
-    description  TEXT NULL            -- NULL if description TBD
+    event_date   TIMESTAMP NULL,
+    location     VARCHAR(255) NULL,
+    description  TEXT NULL
 );
 
------------- RECRUITER ------------
+-- RECRUITER
 CREATE TABLE recruiter (
-    recruiter_id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    recruiter_id  SERIAL PRIMARY KEY,
     company_id    INT NOT NULL,
     name          VARCHAR(255) NOT NULL,
-    email         VARCHAR(255) NULL,  -- only if recruiter wishes to share
+    email         VARCHAR(255) NULL,
     CONSTRAINT fk_recruiter_company
         FOREIGN KEY (company_id) REFERENCES company (company_id)
 );
 
------------- JOB_LISTING ------------
+-- JOB_LISTING
 CREATE TABLE job_listing (
-    listing_id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    recruiter_id  INT NULL,           -- optionally tied to a single recruiter
+    listing_id    SERIAL PRIMARY KEY,
+    recruiter_id  INT NULL,
     company_id    INT NOT NULL,
     title         VARCHAR(255) NOT NULL,
     description   TEXT NOT NULL,
     requirements  TEXT NOT NULL,
     posted_date   DATE NOT NULL,
-    deadline      DATE NULL,          -- NULL for rolling applications
+    deadline      DATE NULL,
     CONSTRAINT fk_listing_recruiter
         FOREIGN KEY (recruiter_id) REFERENCES recruiter (recruiter_id)
         ON DELETE SET NULL,
@@ -53,7 +53,7 @@ CREATE TABLE job_listing (
         FOREIGN KEY (company_id) REFERENCES company (company_id)
 );
 
------------- EVENT_RECRUITERS (junction) ------------
+-- EVENT_RECRUITERS (junction)
 CREATE TABLE event_recruiters (
     recruiter_id  INT NOT NULL,
     event_id      INT NOT NULL,
@@ -66,20 +66,28 @@ CREATE TABLE event_recruiters (
         ON DELETE CASCADE
 );
 
------------- APPLICATION ------------
+-- ENUM TYPES
+CREATE TYPE application_status AS ENUM (
+    'Not Applied','Applied','Interviewing','Offer',
+    'Accepted','Declined','Rejected','Withdrawn'
+);
+CREATE TYPE interview_modality_t AS ENUM ('Phone','Video','In Person');
+CREATE TYPE interview_type_t AS ENUM ('Behavioral','Technical','Screening');
+CREATE TYPE reminder_type_t AS ENUM ('Follow-up','Interview Prep','Deadline','Event Application');
+
+-- APPLICATION
 CREATE TABLE application (
-    application_id      INT AUTO_INCREMENT PRIMARY KEY,
+    application_id      SERIAL PRIMARY KEY,
     student_id          INT NOT NULL,
-    listing_id          INT NULL,     -- NULL for external applications
-    company_id          INT NULL,     -- links to companies already in system
+    listing_id          INT NULL,
+    company_id          INT NULL,
     company_name        VARCHAR(255) NOT NULL,
     role_title          VARCHAR(255) NOT NULL,
-    status              ENUM('Not Applied','Applied','Interviewing','Offer',
-                             'Accepted','Declined','Rejected','Withdrawn') NOT NULL,
+    status              application_status NOT NULL,
     date_applied        DATE NULL,
     recruiter_email     VARCHAR(255) NULL,
     notes               TEXT NULL,
-    last_followup_date  DATE NULL,    -- NULL if no follow-up yet
+    last_followup_date  DATE NULL,
     CONSTRAINT uq_application_student_listing UNIQUE (student_id, listing_id),
     CONSTRAINT chk_application_date_applied
         CHECK (status = 'Not Applied' OR date_applied IS NOT NULL),
@@ -91,13 +99,13 @@ CREATE TABLE application (
         FOREIGN KEY (company_id) REFERENCES company (company_id)
 );
 
------------- EVENT_REGISTRATION ------------
+-- EVENT_REGISTRATION
 CREATE TABLE event_registration (
-    registration_id    INT AUTO_INCREMENT PRIMARY KEY,
+    registration_id    SERIAL PRIMARY KEY,
     student_id         INT NOT NULL,
     event_id           INT NOT NULL,
     registration_date  DATE NOT NULL,
-    match_score        FLOAT NULL,    -- NULL until matching process has run
+    match_score        REAL NULL,
     CONSTRAINT uq_registration_student_event UNIQUE (student_id, event_id),
     CONSTRAINT fk_registration_student
         FOREIGN KEY (student_id) REFERENCES student (student_id),
@@ -105,15 +113,15 @@ CREATE TABLE event_registration (
         FOREIGN KEY (event_id) REFERENCES career_fair_event (event_id)
 );
 
------------- INTERVIEW ------------
+-- INTERVIEW
 CREATE TABLE interview (
-    interview_id        INT AUTO_INCREMENT PRIMARY KEY,
-    application_id      INT NOT NULL, -- every interview must link to an application
-    recruiter_id        INT NULL,     -- interviewer may be unknown
+    interview_id        SERIAL PRIMARY KEY,
+    application_id      INT NOT NULL,
+    recruiter_id        INT NULL,
     round_num           INT NOT NULL,
-    interview_modality  ENUM('Phone','Video','In Person') NOT NULL,
-    interview_type      ENUM('Behavioral','Technical','Screening') NOT NULL,
-    interview_date      DATETIME NULL, -- NULL if not yet decided
+    interview_modality  interview_modality_t NOT NULL,
+    interview_type      interview_type_t NOT NULL,
+    interview_date      TIMESTAMP NULL,
     notes               TEXT NULL,
     CONSTRAINT chk_interview_round CHECK (round_num >= 1),
     CONSTRAINT fk_interview_application
@@ -123,20 +131,17 @@ CREATE TABLE interview (
         ON DELETE SET NULL
 );
 
------------- REMINDER ------------
+-- REMINDER
 CREATE TABLE reminder (
-    reminder_id      INT AUTO_INCREMENT PRIMARY KEY,
+    reminder_id      SERIAL PRIMARY KEY,
     application_id   INT NULL,
     interview_id     INT NULL,
     registration_id  INT NULL,
-    reminder_date    DATETIME NOT NULL,
-    reminder_type    ENUM('Follow-up','Interview Prep','Deadline','Event Application') NOT NULL,
+    reminder_date    TIMESTAMP NOT NULL,
+    reminder_type    reminder_type_t NOT NULL,
     completed        BOOLEAN NOT NULL DEFAULT FALSE,
-    -- exactly one of application / interview / registration must be set
     CONSTRAINT chk_reminder_exactly_one_target CHECK (
-        (application_id  IS NOT NULL) +
-        (interview_id    IS NOT NULL) +
-        (registration_id IS NOT NULL) = 1
+        num_nonnulls(application_id, interview_id, registration_id) = 1
     ),
     CONSTRAINT fk_reminder_application
         FOREIGN KEY (application_id) REFERENCES application (application_id),
