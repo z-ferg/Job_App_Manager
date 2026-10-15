@@ -16,10 +16,17 @@ classifiers = [
 license = "MIT"
 license-files = ["LICENSE.txt"]
 dependencies = [
-    "textual",
-    "fastapi",
-    "psycopg2-binary",
+    # --- Core ---
     "dotenv",
+    "pydantic",
+
+    # --- Database API ---
+    "fastapi",
+    "psycopg[binary]",
+    "uvicorn",
+
+    # --- Textual Frontend ---
+    "textual",
 ]
 
 [project.optional-dependencies]
