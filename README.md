@@ -20,3 +20,4 @@ and launch the TUI in another:
 ```bash
 $ jam
 ```
+- > press `ctrl + q` to quit
