@@ -22,7 +22,16 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
-from textual.widgets import Button, DataTable, Footer, Header, Input, Label, Select, Static
+from textual.widgets import (
+    Button,
+    DataTable,
+    Footer,
+    Header,
+    Input,
+    Label,
+    Select,
+    Static,
+)
 
 Row = dict[str, Any]
 
@@ -38,6 +47,7 @@ STATUSES = [
     "Declined",
     "Rejected",
     "Withdrawn",
+    "Ghosted", # added just to show that the database rules enforce one of the allowed options.
 ]
 
 
@@ -120,7 +130,7 @@ class ConfirmScreen(ModalScreen[bool]):
     }
     ConfirmScreen Horizontal { height: auto; margin-top: 1; align-horizontal: right; }
     """
-    BINDINGS = [
+    BINDINGS = [  # noqa: RUF012
         Binding("y", "answer(True)", "Yes"),
         Binding("n,escape", "answer(False)", "No"),
     ]
@@ -157,10 +167,10 @@ class ApplicationForm(ModalScreen[bool]):
     ApplicationForm #error { color: $error; height: auto; }
     ApplicationForm Horizontal { height: auto; align-horizontal: right; }
     """
-    BINDINGS = [Binding("escape", "cancel", "Cancel")]
+    BINDINGS = [Binding("escape", "cancel", "Cancel")]  # noqa: RUF012
     AUTO_FOCUS = "#company_name"  # otherwise the scroll container grabs focus first
 
-    TEXT_FIELDS = ["company_name", "role_title", "date_applied", "recruiter_email", "notes"]
+    TEXT_FIELDS = ["company_name", "role_title", "date_applied", "recruiter_email", "notes"]  # noqa: RUF012
 
     def __init__(
         self,
@@ -268,7 +278,7 @@ class JamApp(App[None]):
     #search { margin: 1 1 0 1; }
     DataTable { height: 1fr; margin: 1; }
     """
-    BINDINGS = [
+    BINDINGS = [  # noqa: RUF012
         Binding("n", "new_application", "New"),
         Binding("e", "edit_application", "Edit"),
         Binding("d", "delete_application", "Delete"),
