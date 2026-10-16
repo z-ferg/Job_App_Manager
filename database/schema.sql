@@ -110,7 +110,8 @@ CREATE TABLE event_registration (
     CONSTRAINT fk_registration_student
         FOREIGN KEY (student_id) REFERENCES student (student_id),
     CONSTRAINT fk_registration_event
-        FOREIGN KEY (event_id) REFERENCES career_fair_event (event_id)
+        FOREIGN KEY (event_id) REFERENCES career_fair_event (event_id),
+    CONSTRAINT chk_match_score CHECK (match_score BETWEEN 0 AND 100)
 );
 
 -- INTERVIEW
