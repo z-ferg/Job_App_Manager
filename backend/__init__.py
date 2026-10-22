@@ -9,10 +9,11 @@ All of the database interaction code lives in this module.
 import os
 from contextlib import asynccontextmanager
 
+from backend.routers import applications, companies, events, interviews, job_listings, recruiters, registrations, reminders
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from jam.backend.db import make_pool
+from backend.db import make_pool
 
 # ---------------------------------------------------------------------------
 # Config
@@ -63,16 +64,8 @@ def create_app() -> FastAPI:
     )
 
     # Mount routers
-    from jam.backend.errors import register_error_handlers
-    from jam.backend.routers import (
-        applications,
-        companies,
-        events,
-        interviews,
-        job_listings,
-        recruiters,
-        registrations,
-        reminders,
+    from backend.errors import register_error_handlers
+    from backend.routers import (
         students,
     )
 

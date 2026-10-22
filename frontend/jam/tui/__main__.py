@@ -1,6 +1,6 @@
 """Start the Textual TUI frontend application."""
 
-from jam.tui.app import JamApp
+from frontend.jam.tui.app import JamApp
 
 
 def main() -> None:
