@@ -6,11 +6,16 @@ export async function login(email, password) {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });
-
+  console.log(JSON.stringify(student));
   localStorage.setItem('student', JSON.stringify(student));
   return student;
 }
 
 export function logout() {
   localStorage.removeItem('student');
+}
+
+export function getStudent() {
+  const raw = localStorage.getItem('student')
+  return raw ? JSON.parse(raw) : null;
 }

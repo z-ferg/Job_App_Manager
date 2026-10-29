@@ -3,7 +3,7 @@ import Icon from '../components/Icon.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 import CompanyAvatar from '../components/CompanyAvatar.jsx';
 import DateBlock from '../components/DateBlock.jsx';
-import { student } from '../data.js';
+import { getStudent } from '../api/auth.js'
 import { formatShort, parseDate, reminderGroup, reminderWhen } from '../utils/dates.js';
 
 function greeting(now) {
@@ -16,6 +16,12 @@ function greeting(now) {
 export default function Dashboard() {
   const { applications, reminders, fairs } = useOutletContext();
   const now = new Date();
+  const student = getStudent()
+
+  const firstName = student?.name.split(' ')[0] ?? 'missing_name';
+  const major = student?.major ?? 'missing_major';
+  const gradYear = student?.grad_year ?? 'missing_year';
+  const student_id = student?.student_id ?? 'missing_id';
 
   const count = (status) => applications.filter((a) => a.status === status).length;
   const stats = [
@@ -44,7 +50,7 @@ export default function Dashboard() {
             {now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
           <h1 className="page-title">
-            {greeting(now)}, {student.firstName}
+            {greeting(now)}, {firstName}!
           </h1>
         </div>
         <div className="actions">
