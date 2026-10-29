@@ -1,23 +1,35 @@
 # Job_App_Manager
 
-## Quickstart
-1. Create `.env` and add `DATABASE_URL` pointing to the neon database.
+## Quickstart (2 Terminals)
+### Frontend
+1. Enter the frontend directory
+```
+cd frontend/web
+```
 
-2. Create a new python virtual environment and install the package.
-```bash
+2. Install all npm dependencies
+```
+npm install dev
+```
+
+3. Run the frontend server
+```
+npm run dev
+```
+
+<br>
+
+### Backend
+1. From root director, create venv and install dependencies
+```
 python3 -m venv venv
+
 source venv/bin/activate
-pip install -e .[dev]
-```
-> We can switch to docker compose soon.
 
-3. In one session, start the FastAPI backend:
-```bash
-$ jam-api
+pip install fastapi uvicorn "psycopg[binary,pool]" pydantic python-dotenv argon2-cffi
 ```
 
-and launch the TUI in another:
-```bash
-$ jam
+2. Start backend
 ```
-- > press `ctrl + q` to quit
+uvicorn backend:app --reload --port 8000
+```
