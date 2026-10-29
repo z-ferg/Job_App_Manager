@@ -1,13 +1,28 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon.jsx';
+import { login } from '../api/auth.js';
 
 export default function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // TODO: replace with VT CAS / SSO and real email auth.
-  const signIn = (e) => {
+  const signIn = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    setError(null);
+    setLoading(true);
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -17,7 +32,7 @@ export default function Login() {
           <span className="brand__mark brand__mark--lg">
             <Icon name="briefcase" size={26} />
           </span>
-          <span className="brand__name brand__name--lg">Hokie Job Tracker</span>
+          <span className="brand__name brand__name--lg">Job Application Manager</span>
         </div>
 
         <div className="login__pitch">
@@ -51,17 +66,18 @@ export default function Login() {
             <h2 className="login__form-title">Sign in</h2>
             <p className="muted">Welcome back, Hokie.</p>
           </div>
-
-          <button type="button" className="btn btn--primary btn--lg" onClick={signIn}>
-            <Icon name="lock" />
-            Sign in with VT PID
-          </button>
-
-          <div className="divider">or use your email</div>
-
+          
           <div className="field">
             <label htmlFor="email">VT email</label>
-            <input id="email" type="email" placeholder="pid@vt.edu" autoComplete="email" required />
+            <input
+              id="email"
+              type="email"
+              placeholder="pid@vt.edu"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="field">
@@ -69,7 +85,14 @@ export default function Login() {
               <label htmlFor="password">Password</label>
               <a href="#" className="link-sm">Forgot password?</a>
             </div>
-            <input id="password" type="password" autoComplete="current-password" required />
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
           <label className="checkbox">
@@ -77,7 +100,11 @@ export default function Login() {
             Keep me signed in on this computer
           </label>
 
-          <button type="submit" className="btn btn--outline btn--lg">Sign in</button>
+          {error && <p className="muted" role="alert">{error}</p>}
+
+          <button type="submit" className="btn btn--outline btn--lg" disabled={loading}>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </button>
 
           <p className="login__signup">
             New here? <Link to="/">Create an account</Link>

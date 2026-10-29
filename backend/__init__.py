@@ -66,12 +66,13 @@ def create_app() -> FastAPI:
     # Mount routers
     from backend.errors import register_error_handlers
     from backend.routers import (
+        auth,
         students,
     )
 
     register_error_handlers(app)
     for module in (
-        applications, companies, events, interviews, job_listings, 
+        applications, auth, companies, events, interviews, job_listings,
         recruiters, registrations, reminders, students
     ):
         app.include_router(module.router)

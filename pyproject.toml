@@ -23,6 +23,7 @@ dependencies = [
     # --- Database API ---
     "fastapi",
     "psycopg[binary,pool]",
+    "argon2-cffi",
     "uvicorn",
 
     # --- Textual Frontend ---
