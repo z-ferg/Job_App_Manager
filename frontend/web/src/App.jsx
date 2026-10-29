@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard.jsx';
 import Applications from './pages/Applications.jsx';
 import CareerFairs from './pages/CareerFairs.jsx';
 import Reminders from './pages/Reminders.jsx';
+import Signup from './pages/Signup';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/reminders" element={<Reminders />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   );
 }
