@@ -4,6 +4,7 @@ import StatusBadge from '../components/StatusBadge.jsx';
 import CompanyAvatar from '../components/CompanyAvatar.jsx';
 import DateBlock from '../components/DateBlock.jsx';
 import { getStudent } from '../api/auth.js'
+import { getApps } from '../api/application.js'
 import { formatShort, parseDate, reminderGroup, reminderWhen } from '../utils/dates.js';
 
 function greeting(now) {
@@ -21,18 +22,19 @@ export default function Dashboard() {
   const firstName = student?.name.split(' ')[0] ?? 'missing_name';
   const major = student?.major ?? 'missing_major';
   const gradYear = student?.grad_year ?? 'missing_year';
-  const student_id = student?.student_id ?? 'missing_id';
 
   const count = (status) => applications.filter((a) => a.status === status).length;
   const stats = [
-    { label: 'Total applications', value: applications.length },
-    { label: 'Awaiting response', value: count('Applied') },
-    { label: 'Interviews scheduled', value: count('Interview') },
+    { label: 'Total Applications', value: applications.length },
+    { label: 'Not Applied', value: count('Not Applied') },
+    { label: 'Awaiting Response', value: count('Applied') },
+    { label: 'Interviews Scheduled', value: count('Interviewing') },
     { label: 'Offers', value: count('Offer'), highlight: true },
   ];
 
+  const appliedTime = (a) => (a.date_applied ? parseDate(a.date_applied) : 0);
   const recent = [...applications]
-    .sort((a, b) => parseDate(b.applied) - parseDate(a.applied))
+    .sort((a, b) => appliedTime(b) - appliedTime(a))
     .slice(0, 5);
 
   const dueSoon = reminders
@@ -92,15 +94,15 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {recent.map((app) => (
-                  <tr key={app.id}>
+                  <tr key={app.application_id}>
                     <td>
                       <span className="company">
-                        <CompanyAvatar name={app.company} size="sm" />
-                        {app.company}
+                        <CompanyAvatar name={app.company_name} size="sm" />
+                        {app.company_name}
                       </span>
                     </td>
-                    <td className="text-secondary">{app.role}</td>
-                    <td className="muted nowrap">{formatShort(app.applied)}</td>
+                    <td className="text-secondary">{app.role_title}</td>
+                    <td className="muted nowrap">{app.date_applied ? formatShort(app.date_applied) : '—'}</td>
                     <td><StatusBadge status={app.status} /></td>
                   </tr>
                 ))}

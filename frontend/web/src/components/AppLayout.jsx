@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getStudent } from '../api/auth.js';
+import { getApps } from '../api/application.js';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar.jsx';
 import { sampleApplications, sampleFairs, sampleReminders } from '../data.js';
@@ -6,9 +8,17 @@ import { sampleApplications, sampleFairs, sampleReminders } from '../data.js';
 // Holds the signed-in student's data and shares it with every page through
 // the router outlet context. Swap the useState seeds for API calls.
 export default function AppLayout() {
-  const [applications, setApplications] = useState(sampleApplications);
+  const student = getStudent();
+  const [applications, setApplications] = useState([]);
   const [reminders, setReminders] = useState(sampleReminders);
   const [goingFairIds, setGoingFairIds] = useState(['eng']);
+
+  useEffect(() => {
+    if (!student) return;
+    getApps(student.student_id)
+      .then(setApplications)
+      .catch((err) => console.error(err));
+  }, [student?.student_id]);
 
   const addApplication = (app) =>
     setApplications((list) => [{ ...app, id: crypto.randomUUID() }, ...list]);
