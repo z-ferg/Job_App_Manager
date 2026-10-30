@@ -11,6 +11,16 @@ export async function login(email, password) {
   return student;
 }
 
+// Creates the account and signs the new student in.
+export async function signup(fields) {
+  const student = await request('/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify(fields),
+  });
+  localStorage.setItem('student', JSON.stringify(student));
+  return student;
+}
+
 export function logout() {
   localStorage.removeItem('student');
 }

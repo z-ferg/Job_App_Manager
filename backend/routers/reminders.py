@@ -63,10 +63,13 @@ class ReminderRead(BaseModel):
     reminder_date: datetime
     reminder_type: ReminderType
     completed: bool
+    # Only filled by the list endpoint: "Company · Role" or the event name.
+    target_label: str | None = None
 
 
 @router.get("", response_model=list[ReminderRead])
 async def list_reminders(
+    student_id: int | None = None,
     application_id: int | None = None,
     interview_id: int | None = None,
     registration_id: int | None = None,
@@ -76,19 +79,33 @@ async def list_reminders(
     conn: AsyncConnection = Depends(get_conn),
 ):
     """e.g. overdue: `?completed=false&due_before=<now>`."""
+    # reminder has no student_id; ownership comes from whichever target it points at.
     where, params = build_where(
         [
-            ("application_id = %s", application_id),
-            ("interview_id = %s", interview_id),
-            ("registration_id = %s", registration_id),
-            ("completed = %s", completed),
-            ("reminder_date <= %s", due_before),
+            ("COALESCE(a.student_id, ia.student_id, er.student_id) = %s", student_id),
+            ("r.application_id = %s", application_id),
+            ("r.interview_id = %s", interview_id),
+            ("r.registration_id = %s", registration_id),
+            ("r.completed = %s", completed),
+            ("r.reminder_date <= %s", due_before),
         ]
     )
     return await fetch_all(
         conn,
-        f"SELECT * FROM reminder {where} "
-        "ORDER BY reminder_date, reminder_id LIMIT %s OFFSET %s",
+        f"""
+        SELECT r.*,
+               COALESCE(a.company_name || ' · ' || a.role_title,
+                        ia.company_name || ' · ' || ia.role_title,
+                        e.event_name) AS target_label
+        FROM reminder r
+        LEFT JOIN application a ON a.application_id = r.application_id
+        LEFT JOIN interview i ON i.interview_id = r.interview_id
+        LEFT JOIN application ia ON ia.application_id = i.application_id
+        LEFT JOIN event_registration er ON er.registration_id = r.registration_id
+        LEFT JOIN career_fair_event e ON e.event_id = er.event_id
+        {where}
+        ORDER BY r.reminder_date, r.reminder_id LIMIT %s OFFSET %s
+        """,
         [*params, *page],
     )
 

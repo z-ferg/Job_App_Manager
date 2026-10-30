@@ -106,7 +106,6 @@ export default function Login() {
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
 
-
           <p className="login__signup">
             New here? <Link to="/signup">Create an account</Link>
           </p>
