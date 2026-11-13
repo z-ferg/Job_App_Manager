@@ -23,6 +23,12 @@
   --offer-fg: #1e6b38;
   --rejected-bg: #eceaeb;
   --rejected-fg: #5e5559;
+  --not-applied-bg: #f3eff1;
+  --not-applied-fg: #6b6266;
+  --accepted-bg: #1e6b38;
+  --accepted-fg: #ffffff;
+  --declined-bg: #f6e6ec;
+  --declined-fg: #861f41;
 
   --radius-sm: 10px;
   --radius: 12px;
@@ -167,6 +173,21 @@ a:focus-visible {
 .fieldset legend { padding: 0; margin-bottom: 8px; }
 .checkbox { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink-2); }
 .checkbox input { width: 18px; height: 18px; accent-color: var(--maroon); }
+.segmented { display: flex; gap: 4px; padding: 4px; background: var(--chip); border-radius: var(--radius-sm); }
+.segmented__opt {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.segmented__opt input { position: absolute; opacity: 0; pointer-events: none; }
+.segmented__opt.is-active { background: var(--surface); color: var(--maroon); box-shadow: 0 1px 2px rgb(0 0 0 / 0.08); }
+.segmented__opt:has(input:focus-visible) { outline: 2px solid var(--orange); outline-offset: 2px; }
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .divider {
@@ -317,9 +338,29 @@ a:focus-visible {
 
 .badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
 .badge--applied { background: var(--applied-bg); color: var(--applied-fg); }
-.badge--interview { background: var(--interview-bg); color: var(--interview-fg); }
+.badge--not-applied { background: var(--not-applied-bg); color: var(--not-applied-fg); }
+.badge--interviewing { background: var(--interview-bg); color: var(--interview-fg); }
 .badge--offer { background: var(--offer-bg); color: var(--offer-fg); }
-.badge--rejected { background: var(--rejected-bg); color: var(--rejected-fg); }
+.badge--accepted { background: var(--accepted-bg); color: var(--accepted-fg); }
+.badge--declined { background: var(--declined-bg); color: var(--declined-fg); }
+.badge--rejected,
+.badge--withdrawn { background: var(--rejected-bg); color: var(--rejected-fg); }
+
+/* A status badge that is also a <select>, for changing status inline in a table. */
+.badge-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding-right: 26px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 13px center, right 9px center;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+}
+.badge-select:disabled { opacity: 0.6; cursor: progress; }
+.badge-select option { background: var(--surface); color: var(--ink); font-weight: 400; }
 
 /* ---------- Filters / search ---------- */
 .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }

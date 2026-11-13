@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon.jsx';
-import StatusBadge from '../components/StatusBadge.jsx';
+import { StatusSelect } from '../components/StatusBadge.jsx';
 import CompanyAvatar from '../components/CompanyAvatar.jsx';
 import FilterPills from '../components/FilterPills.jsx';
 import { STATUSES } from '../data.js';
@@ -70,7 +70,8 @@ function AddApplicationForm({ onSave, onCancel }) {
 }
 
 export default function Applications() {
-  const { applications, addApplication, removeApplication } = useOutletContext();
+  const { applications, addApplication, updateApplication, removeApplication } = useOutletContext();
+  const [savingId, setSavingId] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [filter, setFilter] = useState('All');
   const [query, setQuery] = useState('');
@@ -86,6 +87,18 @@ export default function Applications() {
     } catch (err) {
       // e.g. a 409 when interviews or reminders still point at this application
       window.alert(err.message);
+    }
+  };
+
+  const changeStatus = async (app, status) => {
+    if (status === app.status) return;
+    setSavingId(app.id);
+    try {
+      await updateApplication(app.id, { status });
+    } catch (err) {
+      window.alert(`Couldn't update status: ${err.message}`);
+    } finally {
+      setSavingId(null);
     }
   };
 
@@ -165,7 +178,14 @@ export default function Applications() {
                   <td className="text-secondary">{app.role}</td>
                   <td className="muted nowrap">{app.location}</td>
                   <td className="muted nowrap">{app.applied ? formatShort(app.applied) : '—'}</td>
-                  <td><StatusBadge status={app.status} /></td>
+                  <td>
+                    <StatusSelect
+                      status={app.status}
+                      onChange={(status) => changeStatus(app, status)}
+                      disabled={savingId === app.id}
+                      label={`Status for ${app.company} application`}
+                    />
+                  </td>
                   <td className="text-secondary nowrap">{app.next}</td>
                   <td className="align-right nowrap">
                     <Link to="/reminders" className="icon-btn" aria-label={`Set a reminder for ${app.company}`}>

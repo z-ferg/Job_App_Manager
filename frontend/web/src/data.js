@@ -1,6 +1,19 @@
 // Sample data. Replace with calls to your backend / API.
 
-export const STATUSES = ['Applied', 'Interview', 'Offer', 'Rejected'];
+// Must match the backend's ApplicationStatus enum (and the Postgres application_status type).
+export const STATUSES = [
+  'Not Applied',
+  'Applied',
+  'Interviewing',
+  'Offer',
+  'Accepted',
+  'Declined',
+  'Rejected',
+  'Withdrawn',
+];
+
+// 'Not Applied' -> 'not-applied', used for badge--* CSS classes.
+export const statusSlug = (status) => status.toLowerCase().replace(/\s+/g, '-');
 
 export const student = {
   name: '[Student name]',
