@@ -1,1 +1,0 @@
-"""Textual application for the Job Application Manager (JAM)"""
