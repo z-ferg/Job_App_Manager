@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from psycopg import AsyncConnection
 from pydantic import BaseModel, Field
 
-from backend.db import fetch_one, get_conn, insert_row
-from backend.routers.students import StudentCreate, StudentRead
+from ..db import fetch_one, get_conn, insert_row
+from .students import StudentCreate, StudentRead
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

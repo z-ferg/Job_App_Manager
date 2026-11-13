@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends
 from psycopg import AsyncConnection
 from pydantic import BaseModel, model_validator
 
-from backend.db import (
+from ..db import (
     build_where,
     delete_row,
     fetch_all,

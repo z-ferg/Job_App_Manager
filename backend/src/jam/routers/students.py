@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query
 from psycopg import AsyncConnection
 from pydantic import BaseModel, Field
 
-from backend.db import (
+from ..db import (
     build_where,
     delete_row,
     fetch_all,
