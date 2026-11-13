@@ -8,7 +8,24 @@ import { formatWeekday } from '../utils/dates.js';
 const TABS = ['All fairs', 'In person', 'Virtual', 'Going'].map((t) => ({ value: t, label: t }));
 
 export default function CareerFairs() {
-  const { fairs, goingFairIds, toggleFair } = useOutletContext();
+  const { fairs, goingFairIds, toggleFair, remindersForFair } = useOutletContext();
+  const [busyId, setBusyId] = useState(null);
+
+  const onToggle = async (fair) => {
+    const going = goingFairIds.includes(fair.id);
+    const n = going ? remindersForFair(fair.id).length : 0;
+    if (n > 0 && !window.confirm(
+      `You won't be marked as going to ${fair.name}, and its ${n === 1 ? 'reminder' : `${n} reminders`} will be deleted. Continue?`,
+    )) return;
+    setBusyId(fair.id);
+    try {
+      await toggleFair(fair);
+    } catch (err) {
+      window.alert(err.message);
+    } finally {
+      setBusyId(null);
+    }
+  };
   const [tab, setTab] = useState('All fairs');
 
   const visible = fairs.filter((f) => {
@@ -63,7 +80,8 @@ export default function CareerFairs() {
                   type="button"
                   className={`btn ${going ? 'btn--primary' : 'btn--outline'} fair__going`}
                   aria-pressed={going}
-                  onClick={() => toggleFair(f)}
+                  onClick={() => onToggle(f)}
+                  disabled={busyId === f.id}
                 >
                   {going && <Icon name="check" size={18} strokeWidth={2.4} />}
                   {going ? 'Going · reminder set' : 'I’m going'}

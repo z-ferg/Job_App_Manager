@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon.jsx';
-import StatusBadge from '../components/StatusBadge.jsx';
+import { StatusSelect } from '../components/StatusBadge.jsx';
 import CompanyAvatar from '../components/CompanyAvatar.jsx';
 import FilterPills from '../components/FilterPills.jsx';
 import { STATUSES } from '../data.js';
@@ -11,11 +11,20 @@ const EMPTY_FORM = { company: '', role: '', location: '', status: 'Applied', app
 
 function AddApplicationForm({ onSave, onCancel }) {
   const [form, setForm] = useState({ ...EMPTY_FORM, applied: new Date().toISOString().slice(0, 10) });
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    onSave({ ...form, next: form.next || 'No update yet' });
+    setError(null);
+    setSaving(true);
+    try {
+      await onSave(form);
+    } catch (err) {
+      setError(err.message);
+      setSaving(false);
+    }
   };
 
   return (
@@ -49,16 +58,20 @@ function AddApplicationForm({ onSave, onCancel }) {
           <input id="app-next" value={form.next} onChange={set('next')} placeholder="e.g. Follow up Nov 5" />
         </div>
       </div>
+      {error && <p className="muted" role="alert">{error}</p>}
       <div className="actions">
         <button type="button" className="btn btn--secondary" onClick={onCancel}>Cancel</button>
-        <button type="submit" className="btn btn--primary">Save application</button>
+        <button type="submit" className="btn btn--primary" disabled={saving}>
+          {saving ? 'Saving…' : 'Save application'}
+        </button>
       </div>
     </form>
   );
 }
 
 export default function Applications() {
-  const { applications, addApplication } = useOutletContext();
+  const { applications, addApplication, updateApplication, removeApplication } = useOutletContext();
+  const [savingId, setSavingId] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [filter, setFilter] = useState('All');
   const [query, setQuery] = useState('');
@@ -66,6 +79,28 @@ export default function Applications() {
 
   const openForm = () => setSearchParams({ new: '1' });
   const closeForm = () => setSearchParams({});
+
+  const confirmDelete = async (app) => {
+    if (!window.confirm(`Delete your ${app.company} application?`)) return;
+    try {
+      await removeApplication(app.id);
+    } catch (err) {
+      // e.g. a 409 when interviews or reminders still point at this application
+      window.alert(err.message);
+    }
+  };
+
+  const changeStatus = async (app, status) => {
+    if (status === app.status) return;
+    setSavingId(app.id);
+    try {
+      await updateApplication(app.id, { status });
+    } catch (err) {
+      window.alert(`Couldn't update status: ${err.message}`);
+    } finally {
+      setSavingId(null);
+    }
+  };
 
   const filterOptions = ['All', ...STATUSES].map((s) => ({
     value: s,
@@ -77,7 +112,7 @@ export default function Applications() {
   const visible = applications
     .filter((a) => filter === 'All' || a.status === filter)
     .filter((a) => !q || `${a.company} ${a.role}`.toLowerCase().includes(q))
-    .sort((a, b) => parseDate(b.applied) - parseDate(a.applied));
+    .sort((a, b) => (b.applied ? parseDate(b.applied) : 0) - (a.applied ? parseDate(a.applied) : 0));
 
   return (
     <>
@@ -94,8 +129,8 @@ export default function Applications() {
 
       {showForm && (
         <AddApplicationForm
-          onSave={(app) => {
-            addApplication(app);
+          onSave={async (app) => {
+            await addApplication(app);
             closeForm();
           }}
           onCancel={closeForm}
@@ -142,13 +177,28 @@ export default function Applications() {
                   </td>
                   <td className="text-secondary">{app.role}</td>
                   <td className="muted nowrap">{app.location}</td>
-                  <td className="muted nowrap">{formatShort(app.applied)}</td>
-                  <td><StatusBadge status={app.status} /></td>
+                  <td className="muted nowrap">{app.applied ? formatShort(app.applied) : '—'}</td>
+                  <td>
+                    <StatusSelect
+                      status={app.status}
+                      onChange={(status) => changeStatus(app, status)}
+                      disabled={savingId === app.id}
+                      label={`Status for ${app.company} application`}
+                    />
+                  </td>
                   <td className="text-secondary nowrap">{app.next}</td>
-                  <td className="align-right">
+                  <td className="align-right nowrap">
                     <Link to="/reminders" className="icon-btn" aria-label={`Set a reminder for ${app.company}`}>
                       <Icon name="bell" size={18} />
                     </Link>
+                    <button
+                      type="button"
+                      className="icon-btn"
+                      aria-label={`Delete ${app.company} application`}
+                      onClick={() => confirmDelete(app)}
+                    >
+                      <Icon name="trash" size={18} />
+                    </button>
                   </td>
                 </tr>
               ))}

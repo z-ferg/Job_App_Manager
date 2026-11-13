@@ -4,7 +4,6 @@ import StatusBadge from '../components/StatusBadge.jsx';
 import CompanyAvatar from '../components/CompanyAvatar.jsx';
 import DateBlock from '../components/DateBlock.jsx';
 import { getStudent } from '../api/auth.js'
-import { getApps } from '../api/application.js'
 import { formatShort, parseDate, reminderGroup, reminderWhen } from '../utils/dates.js';
 
 function greeting(now) {
@@ -32,7 +31,7 @@ export default function Dashboard() {
     { label: 'Offers', value: count('Offer'), highlight: true },
   ];
 
-  const appliedTime = (a) => (a.date_applied ? parseDate(a.date_applied) : 0);
+  const appliedTime = (a) => (a.applied ? parseDate(a.applied) : 0);
   const recent = [...applications]
     .sort((a, b) => appliedTime(b) - appliedTime(a))
     .slice(0, 5);
@@ -94,15 +93,15 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {recent.map((app) => (
-                  <tr key={app.application_id}>
+                  <tr key={app.id}>
                     <td>
                       <span className="company">
-                        <CompanyAvatar name={app.company_name} size="sm" />
-                        {app.company_name}
+                        <CompanyAvatar name={app.company} size="sm" />
+                        {app.company}
                       </span>
                     </td>
-                    <td className="text-secondary">{app.role_title}</td>
-                    <td className="muted nowrap">{app.date_applied ? formatShort(app.date_applied) : '—'}</td>
+                    <td className="text-secondary">{app.role}</td>
+                    <td className="muted nowrap">{app.applied ? formatShort(app.applied) : '—'}</td>
                     <td><StatusBadge status={app.status} /></td>
                   </tr>
                 ))}

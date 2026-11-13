@@ -11,6 +11,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
       <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/applications" element={<Applications />} />
@@ -18,7 +19,6 @@ export default function App() {
         <Route path="/reminders" element={<Reminders />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
-      <Route path="/signup" element={<Signup />} />
     </Routes>
   );
 }
