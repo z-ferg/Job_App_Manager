@@ -1,1 +1,9 @@
-each member’s contributions
+## Team Member Contributions:
+
+**Zach**: Worked as full-stack developer, using Claude to create initial design pages in React and Typescript suited to team vision. Worked on general backend tasks of routing information from Neon to the frontend for display of items such as a students’ applications. Throughout this process I worked greatly on testing and debugging to ensure a clean experience for the users. For the final report, I contributed to the GUI screenshots, tables & keys, and the CRUD operations.
+
+**Joshua**: I worked on both the documentation and the database design. I helped design the ER diagram’s entities, columns, and relationships, assisted writing relationship descriptions, and reviewed schema diagram and its normalization. For the final report, I wrote sections 4.1 & 4.2, on the initial-to-final schema changes, normalization, and the ER diagram’s relationships and cardinality. I also helped organize the document and tested the application locally.
+
+**Max**: I worked as a frontend developer and handled a lot of the technical writing. On the frontend side, I built the React account creation page and integrated it directly with the login screen to complete our authentication flow. I also wired these pages to our backend API endpoints so the user data actually sends to the database securely. For the documentation, I wrote sections 1, 2, and 3 of the final report. This covered the introduction, user support, and the specific details on our database connection and setup. Additionally, I compiled the sample data tables and wrote the sample SQL queries for Section 4.3 to demonstrate our database functionality.
+
+**Alex**: I developed the back-end FastAPI server with Python + psycopg and uvicorn. I built the routes for each table and ensured that each route stays in sync with the postgres database schemas. I added the updated installation and setup instructions for the monorepo's READMEs. For the final report, I worked on section 2.3 (notes on the safety of the backend API) and section 3.2 (setup & installation instructions).
