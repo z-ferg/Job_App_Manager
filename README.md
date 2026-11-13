@@ -1,6 +1,8 @@
 # JAM - Job Application Manager
 
-Welcome to JAM!
+Welcome to JAM! This is a simple job application manager written with Python + FastAPI, React + ViteJS, and Postgres hosted on Neon. See below to get started.
+
+<img src="docs/applications_page.png" alt="JAM Application Dashboard" width="1000" height="500">
 
 ## Setup and Install
 First, clone the repository and `cd` into it. The app runs from two processes:
