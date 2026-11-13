@@ -3,5 +3,13 @@
 **__pycache__
 **.egg-info
 
+# Node
+**node_modules
+**dist
+
 # Config & Environment
 .env
+.idea
+
+# Auto-generated OS files
+**.DS_Store
