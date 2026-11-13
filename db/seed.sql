@@ -25,26 +25,26 @@ VALUES
 ------------ STUDENT ------------
 INSERT INTO student
 VALUES
-    (1, 'Betty Campbell',   'bcamp@vt.edu', 'VT', 'CS',         2026),
-    (2, 'Richard White',    'rwhit@vt.edu', 'VT', 'Finance',    2029),
-    (3, 'Michelle Reynolds','mreyn@vt.edu', 'VT', 'CS',         2027),
-    (4, 'Robert Sanchez',   'rsanc@vt.edu', 'VT', 'CS',         2027),
-    (5, 'Deborah Ramirez',  'drami@vt.edu', 'VT', 'Engineering',2026),
-    (6, 'William Fisher',   'wfish@vt.edu', 'VT', 'Marketing',  2028),
-    (7, 'Deborah Myers',    'dmyer@vt.edu', 'VT', 'Accounting', 2027),
-    (8, 'Robert Morris',    'rmorr@vt.edu', 'VT', 'Economics',  2027),
-    (9, 'John Wilson',      'jwils@vt.edu', 'VT', 'Business',   2028),
-    (10, 'David Coleman',   'dcole@vt.edu', 'VT', 'CS',         2027),
-    (11, 'James Gonzalez',  'jgonz@vt.edu', 'VT', 'CS',         2028),
-    (12, 'William Graham',  'wgrah@vt.edu', 'VT', 'Forestry',   2026),
-    (13, 'Robert Cook',     'rcook@vt.edu', 'VT', 'Dairy Science', 2029),
-    (14, 'Robert Garcia',   'rgarc@vt.edu', 'VT', 'Agriculture',2026),
-    (15, 'Susan Bailey',    'sbail@vt.edu', 'VT', 'Marketing',  2026),
-    (16, 'Sandra Clark',    'sclar@vt.edu', 'VT', 'Chemistry',  2027),
-    (17, 'Linda Butler',    'lbutl@vt.edu', 'VT', 'Biology',    2028),
-    (18, 'John Smith',      'jsmit@vt.edu', 'VT', 'English',    2027),
-    (19, 'Jessica Moore',   'jmoor@vt.edu', 'VT', 'German',     2027),
-    (20, 'Michelle Coleman','mcole@vt.edu', 'VT', 'History',    2027);
+    (1, 'Betty Campbell',   'bcamp@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'CS',         2026),
+    (2, 'Richard White',    'rwhit@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Finance',    2029),
+    (3, 'Michelle Reynolds','mreyn@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'CS',         2027),
+    (4, 'Robert Sanchez',   'rsanc@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'CS',         2027),
+    (5, 'Deborah Ramirez',  'drami@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Engineering',2026),
+    (6, 'William Fisher',   'wfish@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Marketing',  2028),
+    (7, 'Deborah Myers',    'dmyer@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Accounting', 2027),
+    (8, 'Robert Morris',    'rmorr@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Economics',  2027),
+    (9, 'John Wilson',      'jwils@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Business',   2028),
+    (10, 'David Coleman',   'dcole@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'CS',         2027),
+    (11, 'James Gonzalez',  'jgonz@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'CS',         2028),
+    (12, 'William Graham',  'wgrah@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Forestry',   2026),
+    (13, 'Robert Cook',     'rcook@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Dairy Science', 2029),
+    (14, 'Robert Garcia',   'rgarc@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Agriculture',2026),
+    (15, 'Susan Bailey',    'sbail@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Marketing',  2026),
+    (16, 'Sandra Clark',    'sclar@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Chemistry',  2027),
+    (17, 'Linda Butler',    'lbutl@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'Biology',    2028),
+    (18, 'John Smith',      'jsmit@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'English',    2027),
+    (19, 'Jessica Moore',   'jmoor@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'German',     2027),
+    (20, 'Michelle Coleman','mcole@vt.edu', '$argon2d$v=19$m=16,t=2,p=1$Mkk3Vm16b0h6Z0JzUk9SVw$c+912t6yFy+CTUA6eyouMg','VT', 'History',    2027);
 
 ------------ CAREER_FAIR_EVENT ------------
 INSERT INTO career_fair_event

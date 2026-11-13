@@ -1,0 +1,52 @@
+[project]
+name = "jam"
+version = "0.0.1"
+authors = [
+    {name = "Alex Levy",     email = "ajlevy246@gmail.com"},
+    {name = "Zach Ferguson", email = "ferguszo@vt.edu"},
+    {name = "Joshua Gould",  email = "joshuag25@vt.edu"},
+    {name = "Max Redman",    email = "maxred@vt.edu"},
+]
+description = "A job application manager deployed with a PostgreSQL backend hosted on Neon."
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE.txt"]
+dependencies = [
+    # --- Core ---
+    "dotenv",
+    "pydantic",
+
+    # --- Database API ---
+    "fastapi",
+    "psycopg[binary,pool]",
+    "argon2-cffi",
+    "uvicorn",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "pyright",
+]
+
+[project.urls]
+homepage = "https://github.com/z-ferg/Job_App_Manager"
+
+[project.scripts]
+jam-api = "jam.__main__:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+# [tool.setuptools.packages.find]
+# where = ["src"]
+
+[tool.ruff.lint.flake8-bugbear]
+# fix from https://stackoverflow.com/questions/73306462/flake8-throws-b008-fastapi-data-type-definitions 
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]

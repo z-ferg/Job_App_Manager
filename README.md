@@ -1,23 +1,52 @@
-# Job_App_Manager
+# JAM - Job Application Manager
 
-## Quickstart
-1. Create `.env` and add `DATABASE_URL` pointing to the neon database.
+Welcome to JAM!
 
-2. Create a new python virtual environment and install the package.
+## Setup and Install
+First, clone the repository and `cd` into it. The app runs from two processes:
+
+### Neon Database Connection
+User data is stored in a Postgres database hosted on Neon. To establish the connection, first create the `.env` file:
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -e .[dev]
-```
-> We can switch to docker compose soon.
-
-3. In one session, start the FastAPI backend:
-```bash
-$ jam-api
+cp .env.example .env
 ```
 
-and launch the TUI in another:
+Then replace the "<<PASSWORD_HERE>>" placeholder with the connection string from the Neon database before continuing.
+
+---
+
+### Backend Server
+The backend server runs on python with FastAPI, launched via uvicorn. Install it into a new virtual environment with:
 ```bash
-$ jam
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate # for linux/mac; run .venv\Scripts\Activate.ps1 for Windows
+pip install .
 ```
-- > press `ctrl + q` to quit
+
+This adds the `jam-api` script to PATH. With the virtual environment activated, launch it in one process with:
+```bash
+jam-api
+```
+> Opens the FastAPI server on port `8000`
+
+---
+
+### Frontend Application
+Launch the frontend in a new process with node:
+
+1. Enter the frontend directory
+```bash
+cd frontend
+```
+
+2. Install all npm dependencies
+```bash
+npm install
+```
+
+3. Run the frontend server
+```bash
+npm run dev
+```
+> Launches on port 5173 by default, open in a browser at `localhost:5173`

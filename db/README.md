@@ -1,1 +1,1 @@
-schema file and database-related scripts
+# Database Initialization & Seeding Scripts

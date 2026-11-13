@@ -8,12 +8,13 @@ CREATE TABLE company (
 
 -- STUDENT
 CREATE TABLE student (
-    student_id  SERIAL PRIMARY KEY,
-    name        VARCHAR(255) NOT NULL,
-    email       VARCHAR(255) NOT NULL UNIQUE,
-    university  VARCHAR(255) NOT NULL,
-    major       VARCHAR(255) NOT NULL,
-    grad_year   INT NOT NULL,
+    student_id      SERIAL PRIMARY KEY,
+    name            VARCHAR(255) NOT NULL,
+    email           VARCHAR(255) NOT NULL UNIQUE,
+    password_hash   TEXT NOT NULL,
+    university      VARCHAR(255) NOT NULL,
+    major           VARCHAR(255) NOT NULL,
+    grad_year       INT NOT NULL,
     CONSTRAINT chk_student_grad_year CHECK (grad_year BETWEEN 2000 AND 2100)
 );
 
