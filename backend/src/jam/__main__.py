@@ -12,7 +12,7 @@ def main() -> None:
     import uvicorn
 
     uvicorn.run(
-        "jam.backend:app",
+        "jam:app",
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", "8000")),
         reload=bool(int(os.getenv("RELOAD", "0"))),

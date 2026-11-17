@@ -25,10 +25,6 @@ dependencies = [
     "psycopg[binary,pool]",
     "argon2-cffi",
     "uvicorn",
-
-    # --- Textual Frontend ---
-    "textual",
-    "httpx",
 ]
 
 [project.optional-dependencies]
@@ -42,18 +38,14 @@ dev = [
 homepage = "https://github.com/z-ferg/Job_App_Manager"
 
 [project.scripts]
-jam-api = "jam.backend.__main__:main"
-jam     = "jam.tui.__main__:main"
+jam-api = "jam.__main__:main"
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.setuptools.package-data]
-"*" = ["*.tcss"]
+# [tool.setuptools.packages.find]
+# where = ["src"]
 
 [tool.ruff.lint.flake8-bugbear]
 # fix from https://stackoverflow.com/questions/73306462/flake8-throws-b008-fastapi-data-type-definitions 
